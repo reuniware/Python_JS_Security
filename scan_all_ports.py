@@ -6,7 +6,7 @@ import sys
 from threading import Thread
 
 ip = sys.argv[1]
-ip = "192.168.1.15"
+# ip = "192.168.1.15"
 
 
 def exec_scan(port_to_scan):
