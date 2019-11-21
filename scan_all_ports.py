@@ -1,16 +1,17 @@
-#scan ports from 0 to 65535 (very fast thanks to threading)
-#ex: python scan_all_ports.py 192.168.1.1
+# scan ports from 0 to 65535 (very fast thanks to threading)
+# ex: python scan_all_ports.py 192.168.1.1
 
 import socket
 import sys
 from threading import Thread
 
-ipAddressAndPort = (sys.argv[1], 80)
-#ipAddressAndPort = ("192.168.1.1", 80)
+ip = sys.argv[1]
+ip = "192.168.1.52"
+
 
 def exec_scan(port):
     try:
-        ipAddressAndPort = (sys.argv[1], port)
+        ipAddressAndPort = (ip, port)
         s = socket.socket()
         s.settimeout(1)
         s.connect(ipAddressAndPort)
@@ -18,6 +19,7 @@ def exec_scan(port):
         s.close()
     except socket.error as exc:
         pass
+
 
 for port in range(0, 65535):
     t = Thread(target=exec_scan, args=(port,))
