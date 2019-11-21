@@ -6,16 +6,16 @@ import sys
 from threading import Thread
 
 ip = sys.argv[1]
-ip = "192.168.1.52"
+ip = "192.168.1.15"
 
 
-def exec_scan(port):
+def exec_scan(port_to_scan):
     try:
-        ipAddressAndPort = (ip, port)
+        ip_address_and_port = (ip, port_to_scan)
         s = socket.socket()
         s.settimeout(1)
-        s.connect(ipAddressAndPort)
-        print("Connected to ", ipAddressAndPort[0], " on port ", ipAddressAndPort[1])
+        s.connect(ip_address_and_port)
+        print("Connected to ", ip_address_and_port[0], " on port ", ip_address_and_port[1])
         s.close()
     except socket.error as exc:
         pass
