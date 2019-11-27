@@ -59,7 +59,7 @@ def query_sniff(pkt):
         if pkt.haslayer(DNS) and pkt.getlayer(DNS).qr == 0:
             if (ip_src != ip_local) and (ip_src != ip_exclude):
                 if not skipPacket:
-                    print(ip_src, " -> ", ip_dst, " : ", "(", pkt.getlayer(DNS).qd.qname, ")")
+                    print(ip_src + " -> " + ip_dst + " : " + "(" + str(pkt.getlayer(DNS).qd.qname) + ")")
                     skipPacket = True
                 else:
                     skipPacket = False
