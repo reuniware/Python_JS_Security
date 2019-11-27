@@ -1,3 +1,9 @@
+# This script automatically enables ip forwarding and starts arpspoof by itself ! (Beware to admins !)
+# This script allows to exclude another ip address than the local one that is already excluded : In variable ip_exclude (if not empty)
+# It allows also to define a default interface : In variable default_interface (if not empty)
+# This version skips one packet out of 2 because they are logged twice by default (cf. https://stackoverflow.com/questions/52232080/scapy-sniff-the-packet-multiple-times)
+# You might need to "pip install netifaces" if you get error "ImportError: No module named netifaces"
+
 # coding: utf-8
 
 from pip._vendor.distlib.compat import raw_input
