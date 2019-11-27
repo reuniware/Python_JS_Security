@@ -1,3 +1,11 @@
+# Largely inspired by https://null-byte.wonderhowto.com/how-to/build-dns-packet-sniffer-with-scapy-and-python-0163601/
+# Before launching this python script, be sure to run :
+# echo "1" > /proc/sys/net/ipv4/ip_forward
+# arpspoof -i eth0 -t 192.168.1.1 # (Gateway IP address if you're on a LAN)
+# This script allows to exclude another ip address than the local one that is already excluded : In variable ip_exclude (if not empty)
+# It allows also to define a default interface : In variable default_interface (if not empty)
+# This version skips one packet out of 2 because they are logged twice by default (cf. https://stackoverflow.com/questions/52232080/scapy-sniff-the-packet-multiple-times)
+
 from pip._vendor.distlib.compat import raw_input
 from scapy.all import *
 import sys
