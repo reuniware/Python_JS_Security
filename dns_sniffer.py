@@ -10,6 +10,8 @@ import sys
 from scapy.layers.dns import DNS
 from scapy.layers.inet import IP
 
+import netifaces as ni
+
 try:
     interface = raw_input("[*] Enter desired Interface : ")
 except KeyboardInterrupt:
@@ -17,13 +19,20 @@ except KeyboardInterrupt:
     print("[*] Exiting")
     sys.exit(1)
 
+# get local ip address
+ni.ifaddresses(interface)
+ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
+
+print("Local IP = ", ip_local)
+
 
 def query_sniff(pkt):
     if IP in pkt:
         ip_src = pkt[IP].src
         ip_dst = pkt[IP].dst
         if pkt.haslayer(DNS) and pkt.getlayer(DNS).qr == 0:
-            print(ip_src, " -> ", ip_dst, " : ", "(", pkt.getlayer(DNS).qd.qname, ")")
+            if ip_src != ip_local:
+                print(ip_src, " -> ", ip_dst, " : ", "(", pkt.getlayer(DNS).qd.qname, ")")
 
 
 sniff(iface=interface, filter="port 53", prn=query_sniff, store=0)
