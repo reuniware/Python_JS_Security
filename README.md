@@ -7,5 +7,6 @@ It works with IP address as input but also DNS name (eg. google.com).
 
 https://ntic974.blogspot.com
 
-Update :
+Update 2019/11/27 :
 Today I have added Python scripts to sniff DNS requests :)
+I have also added a basic TCP sniffer !
