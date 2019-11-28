@@ -9,6 +9,7 @@ from netfilterqueue import NetfilterQueue
 import scapy.all as scapy
 import re
 import os
+import atexit
 
 from scapy.layers.inet import IP, TCP
 
@@ -46,6 +47,8 @@ nf_queue.bind(0, print_and_accept)
 try:
     nf_queue.run()
 except KeyboardInterrupt:
-    print('')
+    os.system("iptables -F")
+    os.system("iptables -F -t nat")
+    print("Gettin' out")
 
 nf_queue.unbind()
