@@ -11,6 +11,8 @@
 # arpspoof -i eth0 192.168.1.200 -t 192.168.1.1     +      arpspoof -i eth0 192.168.1.1 -t 192.168.1.200
 # arpspoof -i eth0 192.168.1.201 -> intercepte les requêtes dont la destination est 192.168.1.201
 # Please check the interface variable (default is "eth0") and the whitelist variable (ip addresses to ignore)
+# You might also need to change the lines with "if resolve_dns and not (ip_src.startswith('192.168.')):"
+
 
 from netfilterqueue import NetfilterQueue
 import scapy.all as scapy
