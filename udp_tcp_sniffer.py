@@ -15,6 +15,8 @@
 # Once a reverse DNS request is made for an IP address, no further reverse DNS request will be made for this IP address.
 
 
+from threading import Thread
+
 from netfilterqueue import NetfilterQueue
 import scapy.all as scapy
 import re
@@ -47,7 +49,7 @@ os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 dns_table = {}
 
 interface = "eth0"
-resolve_dns = False
+resolve_dns = True
 ip_src = ""
 ip_dst = ""
 src_port = 0
@@ -61,6 +63,15 @@ ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist = {"192.168.1.201", "192.168.1.202", ip_local}
+blacklist = {}
+
+
+def log_info(str_to_log):
+    logging.info(str_to_log)
+
+
+def drop_packet(input_packet):
+    input_packet.drop()
 
 
 def print_and_accept(input_packet):
@@ -125,7 +136,14 @@ def print_and_accept(input_packet):
             dst_port) + " (" + dns_names_dst + ")" + " size = " + str(packet_len)
 
         print(log_str)
-        logging.info(log_str)
+        t = Thread(target=log_info, args=(log_str,))
+        t.start()
+        # logging.info(log_str)
+
+        if ip_src in blacklist or ip_dst in blacklist:
+            t = Thread(target=drop_packet, args=(input_packet,))
+            t.start()
+            # input_packet.drop()
 
     input_packet.accept()
     # packet.drop()
