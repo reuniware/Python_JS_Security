@@ -24,6 +24,8 @@ from scapy.modules.winpcapy import pcap
 
 from datetime import datetime
 
+import netifaces as ni
+
 # LOG_FILENAME = datetime.now().strftime('logfile_%H_%M_%S_%d_%m_%Y.log')
 LOG_FILENAME = datetime.now().strftime('logfile_%d_%m_%Y.log')
 
@@ -43,6 +45,7 @@ os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 
 dns_table = {}
 
+interface = "eth0"
 resolve_dns = True
 ip_src = ""
 ip_dst = ""
@@ -51,6 +54,12 @@ dst_port = 0
 
 resolver = dns.resolver.Resolver()
 resolver.timeout = 0.250
+
+# get local ip address
+ni.ifaddresses(interface)
+ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
+
+whitelist = {"192.168.1.201", "192.168.1.202"}
 
 
 def print_and_accept(input_packet):
@@ -68,6 +77,10 @@ def print_and_accept(input_packet):
         ip_dst = packet[IP].dst
         src_port = packet[IP].sport
         dst_port = packet[IP].dport
+
+        if ip_src == ip_local or ip_dst == ip_local or ip_src in whitelist or ip_dst in whitelist:
+            input_packet.accept()
+            return
 
         dns_names_src = ""
         if ip_src in dns_table:
@@ -109,8 +122,12 @@ def print_and_accept(input_packet):
         log_str = "(" + packet_type + ")" + " " + ip_src + ":" + str(
             src_port) + " (" + dns_names_src + ") -> " + ip_dst + ":" + str(
             dst_port) + " (" + dns_names_dst + ")" + " size = " + str(packet_len)
+
         print(log_str)
         logging.info(log_str)
+
+        if "ssl0.ovh.net" in log_str:
+            input_packet.drop()
 
     input_packet.accept()
     # packet.drop()
