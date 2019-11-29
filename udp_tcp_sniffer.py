@@ -41,7 +41,9 @@ os.system("iptables -F")
 os.system("iptables -F -t nat")
 os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 
-resolve_dns = False
+dns_table = {}
+
+resolve_dns = True
 ip_src = ""
 ip_dst = ""
 src_port = 0
@@ -65,32 +67,40 @@ def print_and_accept(input_packet):
         dst_port = packet[IP].dport
 
         dns_names_src = ""
-        if resolve_dns:
-            answers = ""
-            try:
-                no = dns.reversename.from_address(ip_src)
-                answers = dns.resolver.query(no, 'PTR')
-            except dns.resolver.NXDOMAIN:
-                pass
-            except dns.resolver.NoNameservers:
-                pass
+        if ip_src in dns_table:
+            dns_names_src = dns_table[ip_src]
+        if not(ip_src in dns_table):
+            if resolve_dns and not(ip_src.startswith('192.168.')):
+                answers = ""
+                try:
+                    no = dns.reversename.from_address(ip_src)
+                    answers = dns.resolver.query(no, 'PTR')
+                except dns.resolver.NXDOMAIN:
+                    pass
+                except dns.resolver.NoNameservers:
+                    pass
 
-            for r_data in answers:
-                dns_names_src = dns_names_src + str(r_data.target) + "/"
+                for r_data in answers:
+                    dns_names_src = dns_names_src + str(r_data.target) + "/"
+        dns_table[ip_src] = dns_names_src
 
         dns_names_dst = ""
-        if resolve_dns:
-            answers = ""
-            try:
-                no = dns.reversename.from_address(ip_dst)
-                answers = dns.resolver.query(no, 'PTR')
-            except dns.resolver.NXDOMAIN:
-                pass
-            except dns.resolver.NoNameservers:
-                pass
+        if ip_dst in dns_table:
+            dns_names_dst = dns_table[ip_dst]
+        if not(ip_dst in dns_table):
+            if resolve_dns and not(ip_dst.startswith('192.168.')):
+                answers = ""
+                try:
+                    no = dns.reversename.from_address(ip_dst)
+                    answers = dns.resolver.query(no, 'PTR')
+                except dns.resolver.NXDOMAIN:
+                    pass
+                except dns.resolver.NoNameservers:
+                    pass
 
-            for r_data in answers:
-                dns_names_dst = dns_names_dst + str(r_data.target) + "/"
+                for r_data in answers:
+                    dns_names_dst = dns_names_dst + str(r_data.target) + "/"
+        dns_table[ip_dst] = dns_names_dst
 
         packet_len = input_packet.get_payload_len()
         log_str = "(" + packet_type + ")" + " " + ip_src + ":" + str(
@@ -99,7 +109,10 @@ def print_and_accept(input_packet):
         print(log_str)
         logging.info(log_str)
 
-    input_packet.accept()
+    if (ip_src == "192.168.1.30" or ip_dst == "192.168.1.30") and (ip_src != "192.168.1.201" and ip_dst != "192.168.1.201"):
+        input_packet.drop()
+    else:
+        input_packet.accept()
     # packet.drop()
 
 
