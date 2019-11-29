@@ -59,7 +59,7 @@ resolver.timeout = 0.250
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist = {"192.168.1.201", "192.168.1.202"}
+whitelist = {"192.168.1.201", "192.168.1.202", ip_local}
 
 
 def print_and_accept(input_packet):
@@ -78,7 +78,7 @@ def print_and_accept(input_packet):
         src_port = packet[IP].sport
         dst_port = packet[IP].dport
 
-        if ip_src == ip_local or ip_dst == ip_local or ip_src in whitelist or ip_dst in whitelist:
+        if ip_src in whitelist or ip_dst in whitelist:
             input_packet.accept()
             return
 
