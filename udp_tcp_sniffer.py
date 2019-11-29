@@ -39,9 +39,6 @@ for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, format='%(asctime)s :: %(message)s')
 
-# logging.info('Forecastiong Job Started...')
-# logging.debug('abc method started...')
-
 os.system("echo '1' > /proc/sys/net/ipv4/ip_forward")
 os.system("iptables -F")
 os.system("iptables -F -t nat")
