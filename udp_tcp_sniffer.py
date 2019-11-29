@@ -49,6 +49,9 @@ ip_dst = ""
 src_port = 0
 dst_port = 0
 
+resolver = dns.resolver.Resolver()
+resolver.timeout = 0.250
+
 
 def print_and_accept(input_packet):
     global ip_src, ip_dst, dst_port, src_port
@@ -69,8 +72,8 @@ def print_and_accept(input_packet):
         dns_names_src = ""
         if ip_src in dns_table:
             dns_names_src = dns_table[ip_src]
-        if not(ip_src in dns_table):
-            if resolve_dns and not(ip_src.startswith('192.168.')):
+        if not (ip_src in dns_table):
+            if resolve_dns and not (ip_src.startswith('192.168.')):
                 answers = ""
                 try:
                     no = dns.reversename.from_address(ip_src)
@@ -87,8 +90,8 @@ def print_and_accept(input_packet):
         dns_names_dst = ""
         if ip_dst in dns_table:
             dns_names_dst = dns_table[ip_dst]
-        if not(ip_dst in dns_table):
-            if resolve_dns and not(ip_dst.startswith('192.168.')):
+        if not (ip_dst in dns_table):
+            if resolve_dns and not (ip_dst.startswith('192.168.')):
                 answers = ""
                 try:
                     no = dns.reversename.from_address(ip_dst)
@@ -107,7 +110,11 @@ def print_and_accept(input_packet):
             src_port) + " (" + dns_names_src + ") -> " + ip_dst + ":" + str(
             dst_port) + " (" + dns_names_dst + ")" + " size = " + str(packet_len)
         print(log_str)
+        # logging.info(log_str)
+
+    if "teamviewer" in log_str:
         logging.info(log_str)
+        input_packet.drop()
 
     input_packet.accept()
     # packet.drop()
