@@ -50,7 +50,7 @@ os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 dns_table = {}
 
 interface = "eth0"
-resolve_dns = True
+resolve_dns = False
 ip_src = ""
 ip_dst = ""
 src_port = 0
