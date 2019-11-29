@@ -110,11 +110,7 @@ def print_and_accept(input_packet):
             src_port) + " (" + dns_names_src + ") -> " + ip_dst + ":" + str(
             dst_port) + " (" + dns_names_dst + ")" + " size = " + str(packet_len)
         print(log_str)
-        # logging.info(log_str)
-
-    if "teamviewer" in log_str:
         logging.info(log_str)
-        input_packet.drop()
 
     input_packet.accept()
     # packet.drop()
