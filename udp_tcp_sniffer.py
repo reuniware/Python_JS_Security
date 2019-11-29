@@ -109,10 +109,7 @@ def print_and_accept(input_packet):
         print(log_str)
         logging.info(log_str)
 
-    if (ip_src == "192.168.1.30" or ip_dst == "192.168.1.30") and (ip_src != "192.168.1.201" and ip_dst != "192.168.1.201"):
-        input_packet.drop()
-    else:
-        input_packet.accept()
+    input_packet.accept()
     # packet.drop()
 
 
