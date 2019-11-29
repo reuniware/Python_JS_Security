@@ -126,9 +126,6 @@ def print_and_accept(input_packet):
         print(log_str)
         logging.info(log_str)
 
-        if "ssl0.ovh.net" in log_str:
-            input_packet.drop()
-
     input_packet.accept()
     # packet.drop()
 
