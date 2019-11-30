@@ -4,6 +4,7 @@
 # And don't spy your colleagues !
 # apt-get install build-essential python-dev libnetfilter-queue-dev
 # pip install NetfilterQueue
+# pip install netifaces
 # sudo apt-get install python-netfilterqueue
 # iptables -F
 # iptables -F -t nat
