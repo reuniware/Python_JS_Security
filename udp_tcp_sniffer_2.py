@@ -2,6 +2,9 @@
 
 # Improved version with also Netbios name resolution for IP address starting with "192.168."
 
+# For any inquiries (opensource projects, commercial projects, adaptation for a company, network monitoring projects... etc...) :
+#       Feel free to email me :     reuniware@gmail.com     investdatasystems@yahoo.com
+
 # This script can be a good starting point for implementing your own firewall :)
 # And don't spy your colleagues !
 # apt-get install build-essential python-dev libnetfilter-queue-dev
@@ -71,8 +74,8 @@ ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist_ips = {"192.168.1.201", ip_local}
 blacklist_ips = {}  # If no IP to blacklist then {}
-log_only_str = {""}  # If nothing to log then {""}
-blacklist_str = {}  # If no blacklist string then {}
+log_only_str = {"-LLT-", "-JR-"}  # If nothing to log then {""}
+blacklist_str = {"-LLT-", "-JR-"}  # If no blacklist string then {}
 
 if len(blacklist_ips) == 0:
     blacklist_ips = {}
@@ -211,15 +214,21 @@ def print_and_accept(input_packet):
                 # logging.info(log_str)
 
         if ip_src in blacklist_ips or ip_dst in blacklist_ips:
-            print("Blacklisted IP : Dropping [" + ip_src + "]")
+            log_str_bi = "Blacklisted IP : Dropping [" + ip_src + "]"
             t = Thread(target=drop_packet, args=(input_packet,))
+            t.start()
+            print(log_str_bi)
+            t = Thread(target=log_info, args=(log_str_bi,))
             t.start()
             packet_processed = True
 
         for str_to_search in blacklist_str:
             if str_to_search in log_str:
-                print("Blacklisted STR : Dropping [" + str_to_search + "]")
+                log_str_bs = "Blacklisted STR : Dropping [" + str_to_search + "]"
                 t = Thread(target=drop_packet, args=(input_packet,))
+                t.start()
+                print(log_str_bs)
+                t = Thread(target=log_info, args=(log_str_bs,))
                 t.start()
                 packet_processed = True
 
