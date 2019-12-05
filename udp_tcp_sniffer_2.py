@@ -1,13 +1,21 @@
 # coding: utf-8
 
+# Version with Netbios name resolution for IP address starting with "192.168."
+
+# This script can be a good starting point for implementing your own firewall :)
+# And don't spy your colleagues !
 # apt-get install build-essential python-dev libnetfilter-queue-dev
 # pip install NetfilterQueue
+# pip install netifaces
 # sudo apt-get install python-netfilterqueue
 # iptables -F
 # iptables -F -t nat
 # iptables -I FORWARD -j NFQUEUE --queue-num 0
 # arpspoof -i eth0 192.168.1.200 -t 192.168.1.1     +      arpspoof -i eth0 192.168.1.1 -t 192.168.1.200
 # arpspoof -i eth0 192.168.1.201 -> intercepte les requêtes dont la destination est 192.168.1.201
+# Please check the interface variable (default is "eth0") and the whitelist variable (ip addresses to ignore).
+# You might also need to change the lines with "if resolve_dns and not (ip_src.startswith('192.168.')):".
+# Once a reverse DNS request is made for an IP address, no further reverse DNS request will be made for this IP address.
 import signal
 from subprocess import Popen, PIPE
 from threading import Thread
