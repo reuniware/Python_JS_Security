@@ -72,6 +72,7 @@ ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 whitelist = {"192.168.1.201", ip_local}     # IP addresses for which the packets will systematically be accepted
 blacklist = {"192.168.1.111"}               # IP addresses for which the packets will systematically be dropped (refused)
 log_only_str = {"facebook", "twitter", "teamviewer", "instagram"}   # Strings to search in the log_str variable (if found then logged)
+                                                                    # If nothing to search then declare log_only_str = {""}
 
 
 def exit_script():
