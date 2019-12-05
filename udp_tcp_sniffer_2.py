@@ -1,6 +1,6 @@
 # coding: utf-8
 
-# Version with Netbios name resolution for IP address starting with "192.168."
+# Improved version with also Netbios name resolution for IP address starting with "192.168."
 
 # This script can be a good starting point for implementing your own firewall :)
 # And don't spy your colleagues !
@@ -60,6 +60,8 @@ ip_dst = ""
 src_port = 0
 dst_port = 0
 
+nb_packets = 0
+
 resolver = dns.resolver.Resolver()
 resolver.timeout = 0.250
 
@@ -69,7 +71,7 @@ ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist = {ip_local}
 blacklist = {}
-log_only_str = "teamviewer"
+log_only_str = {"facebook", "twitter", "teamviewer"}
 
 
 def exit_script():
@@ -104,7 +106,7 @@ def drop_packet(input_packet):
 
 
 def print_and_accept(input_packet):
-    global ip_src, ip_dst, dst_port, src_port
+    global ip_src, ip_dst, dst_port, src_port, nb_packets
     packet = scapy.IP(input_packet.get_payload())
 
     if UDP in packet:
@@ -168,6 +170,8 @@ def print_and_accept(input_packet):
             else:
                 netbios_name_src = get_netbios_name(ip_src)
                 netbios_table[ip_src] = netbios_name_src
+        if str(netbios_name_src) == 'None':
+            netbios_name_src = ''
 
         netbios_name_dst = ""
         if resolve_netbios and ip_dst.startswith("192.168."):
@@ -176,17 +180,23 @@ def print_and_accept(input_packet):
             else:
                 netbios_name_dst = get_netbios_name(ip_dst)
                 netbios_table[ip_dst] = netbios_name_dst
+        if str(netbios_name_dst) == 'None':
+            netbios_name_dst = ''
+
+        nb_packets = nb_packets + 1
+        nb_packets_str = "{:0>9d}".format(nb_packets)
 
         packet_len = input_packet.get_payload_len()
-        log_str = "(" + packet_type + ")" + " " + ip_src + ":" + str(
+        log_str = nb_packets_str + " (" + packet_type + ")" + " " + ip_src + ":" + str(
             src_port) + " (" + dns_names_src + ")" + "(" + str(netbios_name_src) + ") -> " + ip_dst + ":" + str(
             dst_port) + " (" + dns_names_dst + ")" + "(" + str(netbios_name_dst) + ") size = " + str(packet_len)
 
-        if log_only_str in log_str:
-            print(log_str)
-            t = Thread(target=log_info, args=(log_str,))
-            t.start()
-        # logging.info(log_str)
+        for str_to_search in log_only_str:
+            if str_to_search in log_str:
+                print(log_str)
+                t = Thread(target=log_info, args=(log_str,))
+                t.start()
+                # logging.info(log_str)
 
         if ip_src in blacklist or ip_dst in blacklist:
             t = Thread(target=drop_packet, args=(input_packet,))
