@@ -74,8 +74,8 @@ ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist_ips = {"192.168.1.201", ip_local}
 blacklist_ips = {}  # If no IP to blacklist then {}
-log_only_str = {"-LLT-", "-JR-"}  # If nothing to log then {""}
-blacklist_str = {"-LLT-", "-JR-"}  # If no blacklist string then {}
+log_only_str = {"192.168.1.102", "192.168.1.111"}  # If nothing to log then {""}
+blacklist_str = {}  # If no blacklist string then {}
 
 if len(blacklist_ips) == 0:
     blacklist_ips = {}
@@ -121,6 +121,8 @@ def drop_packet(input_packet):
 def print_and_accept(input_packet):
     global ip_src, ip_dst, dst_port, src_port, nb_packets
     packet = scapy.IP(input_packet.get_payload())
+
+    packet_type = "???"
 
     if UDP in packet:
         packet_type = "UDP"
@@ -245,5 +247,9 @@ try:
     nf_queue.run()
 except KeyboardInterrupt:
     exit_script()
+except UnboundLocalError:
+    pass
+except AttributeError:
+    pass
 
 nf_queue.unbind()
