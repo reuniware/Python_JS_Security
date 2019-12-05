@@ -88,7 +88,11 @@ def get_netbios_name(ip_address):
         if l.startswith(ip_address):
             netbios = l.split('    ')
             # print(netbios[1])
-            return netbios[1]
+            nb_name = netbios[1]
+            nb_name = nb_name.replace('<server>', '')
+            nb_name = nb_name.replace('<unknown>', '')
+            nb_name = nb_name.replace(' ', '')
+            return nb_name
 
 
 def log_info(str_to_log):
