@@ -52,7 +52,7 @@ os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 dns_table = {}
 netbios_table = {}
 
-interface = "eth0"
+interface = "eth0"                          # Change this to match your network interface name on your Kali Linux machine
 resolve_dns = True
 resolve_netbios = True
 ip_src = ""
@@ -63,15 +63,15 @@ dst_port = 0
 nb_packets = 0
 
 resolver = dns.resolver.Resolver()
-resolver.timeout = 0.250
+resolver.timeout = 0.250                    # Change this to increase the reverse DNS request timeout
 
 # get local ip address
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist = {ip_local}
-blacklist = {}
-log_only_str = {"facebook", "twitter", "teamviewer"}
+whitelist = {"192.168.1.201", ip_local}     # IP addresses for which the packets will systematically be accepted
+blacklist = {"192.168.1.111"}               # IP addresses for which the packets will systematically be dropped (refused)
+log_only_str = {"facebook", "twitter", "teamviewer", "instagram"}   # Strings to search in the log_str variable (if found then logged)
 
 
 def exit_script():
@@ -114,6 +114,8 @@ def print_and_accept(input_packet):
 
     if TCP in packet:
         packet_type = "TCP"
+
+    packet_processed = False
 
     if IP in packet:
         ip_src = packet[IP].src
@@ -199,13 +201,16 @@ def print_and_accept(input_packet):
                 # logging.info(log_str)
 
         if ip_src in blacklist or ip_dst in blacklist:
+            print("Dropping " + ip_src)
             t = Thread(target=drop_packet, args=(input_packet,))
             t.start()
+            packet_processed = True
 
             # input_packet.drop()
 
-    input_packet.accept()
-    # packet.drop()
+    if not packet_processed:
+        input_packet.accept()
+        # packet.drop()
 
 
 nf_queue = NetfilterQueue()
