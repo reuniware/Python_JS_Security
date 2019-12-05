@@ -52,7 +52,7 @@ os.system("iptables -A FORWARD -j NFQUEUE --queue-num 0")
 dns_table = {}
 netbios_table = {}
 
-interface = "eth0"                          # Change this to match your network interface name on your Kali Linux machine
+interface = "eth0"
 resolve_dns = True
 resolve_netbios = True
 ip_src = ""
@@ -63,16 +63,25 @@ dst_port = 0
 nb_packets = 0
 
 resolver = dns.resolver.Resolver()
-resolver.timeout = 0.250                    # Change this to increase the reverse DNS request timeout
+resolver.timeout = 0.250
 
 # get local ip address
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist = {"192.168.1.201", ip_local}     # IP addresses for which the packets will systematically be accepted
-blacklist = {"192.168.1.111"}               # IP addresses for which the packets will systematically be dropped (refused)
-log_only_str = {"facebook", "twitter", "teamviewer", "instagram"}   # Strings to search in the log_str variable (if found then logged)
-                                                                    # If nothing to search then declare log_only_str = {""}
+whitelist_ips = {"192.168.1.201", ip_local}
+blacklist_ips = {}  # If no IP to blacklist then {}
+log_only_str = {""}  # If nothing to log then {""}
+blacklist_str = {}  # If no blacklist string then {}
+
+if len(blacklist_ips) == 0:
+    blacklist_ips = {}
+
+if len(log_only_str) == 0:
+    log_only_str = {""}
+
+if len(blacklist_str) == 0:
+    blacklist_str = {}
 
 
 def exit_script():
@@ -124,7 +133,7 @@ def print_and_accept(input_packet):
         src_port = packet[IP].sport
         dst_port = packet[IP].dport
 
-        if ip_src in whitelist or ip_dst in whitelist:
+        if ip_src in whitelist_ips or ip_dst in whitelist_ips:
             input_packet.accept()
             return
 
@@ -201,11 +210,18 @@ def print_and_accept(input_packet):
                 t.start()
                 # logging.info(log_str)
 
-        if ip_src in blacklist or ip_dst in blacklist:
-            print("Dropping " + ip_src)
+        if ip_src in blacklist_ips or ip_dst in blacklist_ips:
+            print("Blacklisted IP : Dropping [" + ip_src + "]")
             t = Thread(target=drop_packet, args=(input_packet,))
             t.start()
             packet_processed = True
+
+        for str_to_search in blacklist_str:
+            if str_to_search in log_str:
+                print("Blacklisted STR : Dropping [" + str_to_search + "]")
+                t = Thread(target=drop_packet, args=(input_packet,))
+                t.start()
+                packet_processed = True
 
             # input_packet.drop()
 
