@@ -131,9 +131,6 @@ def print_and_accept(input_packet):
     if ICMP in packet:
         packet_type = "ICMP"
 
-    if ARP in packet:
-        packet_type = "ARP "
-
     packet_processed = False
 
     if IP in packet:
