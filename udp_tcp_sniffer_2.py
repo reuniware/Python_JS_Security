@@ -129,7 +129,7 @@ def print_and_accept(input_packet):
     if TCP in packet:
         packet_type = "TCP "
 
-    if ICMP in packet and IP in packet:
+    if ICMP in packet:
         packet_type = "ICMP"
 
     packet_processed = False
