@@ -1,6 +1,6 @@
 # coding: utf-8
 
-# Improved version with also Netbios name resolution for IP address starting with "192.168."
+# Improved version with also Netbios name resolution for IP address starting with "192.168.", and ICMP, and whitelist string
 
 # For any inquiries (opensource projects, commercial projects, adaptation for a company, network monitoring projects... etc...) :
 #       Feel free to email me :     reuniware@gmail.com     investdatasystems@yahoo.com
