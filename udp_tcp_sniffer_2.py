@@ -19,7 +19,6 @@
 # Please check the interface variable (default is "eth0") and the whitelist variable (ip addresses to ignore).
 # You might also need to change the lines with "if resolve_dns and not (ip_src.startswith('192.168.')):".
 # Once a reverse DNS request is made for an IP address, no further reverse DNS request will be made for this IP address.
-import signal
 from subprocess import Popen, PIPE
 from threading import Thread
 
@@ -31,7 +30,7 @@ import logging
 import dns.resolver
 import dns.reversename
 
-from scapy.layers.inet import IP, TCP, UDP
+from scapy.layers.inet import IP, TCP, UDP, ICMP
 from scapy.modules.winpcapy import pcap
 
 from datetime import datetime
@@ -72,9 +71,9 @@ resolver.timeout = 0.250
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist_ips = {"192.168.1.201", ip_local}
+whitelist_ips = {ip_local}
 blacklist_ips = {}  # If no IP to blacklist then {}
-log_only_str = {"192.168.1.102", "192.168.1.111"}  # If nothing to log then {""}
+log_only_str = {""}  # If nothing to log then {""}
 blacklist_str = {}  # If no blacklist string then {}
 
 if len(blacklist_ips) == 0:
@@ -125,21 +124,28 @@ def print_and_accept(input_packet):
     packet_type = "???"
 
     if UDP in packet:
-        packet_type = "UDP"
+        packet_type = "UDP "
 
     if TCP in packet:
-        packet_type = "TCP"
+        packet_type = "TCP "
+
+    if ICMP in packet and IP in packet:
+        packet_type = "ICMP"
 
     packet_processed = False
 
     if IP in packet:
+
         ip_src = packet[IP].src
         ip_dst = packet[IP].dst
-        src_port = packet[IP].sport
-        dst_port = packet[IP].dport
+
+        if ICMP not in packet:
+            src_port = packet[IP].sport
+            dst_port = packet[IP].dport
 
         if ip_src in whitelist_ips or ip_dst in whitelist_ips:
             input_packet.accept()
+            # When packet automatically accepted because IP is in whitelist then nothing is logged (in this version)
             return
 
         dns_names_src = ""
