@@ -31,6 +31,7 @@ import dns.resolver
 import dns.reversename
 
 from scapy.layers.inet import IP, TCP, UDP, ICMP
+from scapy.layers.l2 import ARP
 from scapy.modules.winpcapy import pcap
 
 from datetime import datetime
@@ -72,18 +73,16 @@ ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist_ips = {ip_local}
-blacklist_ips = {}  # If no IP to blacklist then {}
-log_only_str = {""}  # If nothing to log then {""}
-blacklist_str = {}  # If no blacklist string then {}
+blacklist_ips = {}          # If no IP to blacklist then {}
+log_only_str = {""}         # If nothing to log then {""}       # string is compared to log_str variable
+blacklist_str = {}          # If no blacklist string then {}    # string is compared to log_str variable
+whitelist_str = {}          # If no whitelist string then {}    # string is compared to log_str variable
 
 if len(blacklist_ips) == 0:
     blacklist_ips = {}
 
 if len(log_only_str) == 0:
     log_only_str = {""}
-
-if len(blacklist_str) == 0:
-    blacklist_str = {}
 
 
 def exit_script():
@@ -131,6 +130,9 @@ def print_and_accept(input_packet):
 
     if ICMP in packet:
         packet_type = "ICMP"
+
+    if ARP in packet:
+        packet_type = "ARP "
 
     packet_processed = False
 
@@ -214,31 +216,47 @@ def print_and_accept(input_packet):
             src_port) + " (" + dns_names_src + ")" + "(" + str(netbios_name_src) + ") -> " + ip_dst + ":" + str(
             dst_port) + " (" + dns_names_dst + ")" + "(" + str(netbios_name_dst) + ") size = " + str(packet_len)
 
-        for str_to_search in log_only_str:
-            if str_to_search in log_str:
-                print(log_str)
-                t = Thread(target=log_info, args=(log_str,))
-                t.start()
-                # logging.info(log_str)
+        if len(log_only_str) > 0:
+            for str_to_search in log_only_str:
+                if str_to_search in log_str:
+                    print(log_str)
+                    t = Thread(target=log_info, args=(log_str,))
+                    t.start()
+                    # logging.info(log_str)
 
-        if ip_src in blacklist_ips or ip_dst in blacklist_ips:
-            log_str_bi = "Blacklisted IP : Dropping [" + ip_src + "]"
-            t = Thread(target=drop_packet, args=(input_packet,))
-            t.start()
-            print(log_str_bi)
-            t = Thread(target=log_info, args=(log_str_bi,))
-            t.start()
-            packet_processed = True
-
-        for str_to_search in blacklist_str:
-            if str_to_search in log_str:
-                log_str_bs = "Blacklisted STR : Dropping [" + str_to_search + "]"
+        # Blacklisted IP addresses
+        if len(blacklist_ips) > 0:
+            if ip_src in blacklist_ips or ip_dst in blacklist_ips:
+                log_str_bi = "Blacklisted IP : Dropping [" + ip_src + "]"
                 t = Thread(target=drop_packet, args=(input_packet,))
                 t.start()
-                print(log_str_bs)
-                t = Thread(target=log_info, args=(log_str_bs,))
+                print(log_str_bi)
+                t = Thread(target=log_info, args=(log_str_bi,))
                 t.start()
                 packet_processed = True
+
+        # Whitelisted strings
+        if not packet_processed:
+            if len(whitelist_str) > 0:
+                for str_to_search in whitelist_str:
+                    if str_to_search in log_str:
+                        log_str_ws = "Whitelisted STR : Accepting [" + str_to_search + "]"
+                        print(log_str_ws)
+                        input_packet.accept()
+                        packet_processed = True
+
+        # Blacklisted strings
+        if not packet_processed:
+            if len(blacklist_str) > 0:
+                for str_to_search in blacklist_str:
+                    if str_to_search in log_str:
+                        log_str_bs = "Blacklisted STR : Dropping [" + str_to_search + "]"
+                        t = Thread(target=drop_packet, args=(input_packet,))
+                        t.start()
+                        print(log_str_bs)
+                        t = Thread(target=log_info, args=(log_str_bs,))
+                        t.start()
+                        packet_processed = True
 
             # input_packet.drop()
 
