@@ -66,7 +66,7 @@ resolver.timeout = 0.250
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist_ips = {ip_local, "192.168.1.227", "192.168.1.106", "192.168.1.251"}
+whitelist_ips = {ip_local}
 blacklist_ips = {"52.109.88.10", "40.69.221.239", "40.67.254.36", "52.114.88.28", "13.107.42.12", "52.114.132.22",
                  "40.67.251.132"}
 log_only_str = {""}  # If nothing to log then {""}       # string is compared to log_str variable
