@@ -67,15 +67,10 @@ ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
 whitelist_ips = {ip_local, "192.168.1.227", "192.168.1.106", "192.168.1.251"}
-# whitelist_ips = {ip_local, "192.168.1.201", "192.168.1.106", "192.168.1.247", "192.168.1.211", "192.168.1.123",
-#                  "192.168.1.209"}
-# blacklist_ips = {"192.168.1.70", "192.168.1.71", "192.168.1.74", "192.168.1.75", "192.168.1.76", "192.168.1.77", "192.168.1.79", "192.168.1.80", "192.168.1.81", "192.168.1.83", "192.168.1.84", "192.168.1.85",
-#                 "192.168.1.86", "192.168.1.87", "192.168.1.88", "192.168.1.89", "192.168.1.90", "192.168.1.91", "192.168.1.92", "192.168.1.93", "192.168.1.94", "192.168.1.95", "192.168.1.96"}  # If no IP to blacklist then {}
 blacklist_ips = {"52.109.88.10", "40.69.221.239", "40.67.254.36", "52.114.88.28", "13.107.42.12", "52.114.132.22",
-                 "40.67.251.132", "192.168.1.235"}
+                 "40.67.251.132"}
 log_only_str = {""}  # If nothing to log then {""}       # string is compared to log_str variable
 blacklist_str = {"8.247.", "8.248."}  # If no blacklist string then {}    # string is compared to log_str variable
-# whitelist_str = {"PC-JR-", "PC-RS-", "PC-MC-", "PC-AB-", "PC-JM-", "PC-SL-", "PC-GB-", "PC-VZ-", "PC-AV-", "PC-LLT-", "PC-RD-", "PC-NB-", "PC-SA-", "PC-AJ-", "PC-NH-", "PC-NB-", "PC-JP-", "PC-DB-"}  # If no whitelist string then {}    # string is compared to log_str variable
 whitelist_str = {}  # If no whitelist string then {}    # string is compared to log_str variable
 
 if len(blacklist_ips) == 0:
