@@ -1,9 +1,13 @@
 Project about ip rotation with TOR
 
-Install tor browser
+Install tor browser + add path to tor.exe in environment variable Path (for user or system)
 
 Install chromedriver
 
-Modify code
+Modify code (for chromedriver path)
 
-Use it !
+Start Tor Browser
+
+Run the script
+
+You will have IP rotation and will be able to generate traffic for eg. a Youtube Video ;)
