@@ -21,10 +21,10 @@ if __name__ == '__main__':
             chrome_options.add_argument('--proxy-server=socks5://%s' % proxy)
             # chrome_options.add_argument('--headless')
 
-            driver = webdriver.Chrome('C:/_DVA/Tools/chromedriver_win32/chromedriver.exe', options=chrome_options)
+            driver = webdriver.Chrome('C:/PathToChromeDriver/chromedriver.exe', options=chrome_options)
 
             print("Obtention page : Début")
-            driver.get("https://youtu.be/bNeCXe0BVIw")
+            driver.get("https://youtu.be/00000000")
             print("Obtention page : Fin")
 
             print("Vérif captcha : Début")
