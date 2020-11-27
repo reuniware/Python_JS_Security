@@ -1,4 +1,4 @@
-Project about ip rotation with TOR
+Project about ip rotation with TOR + user agent rotation ;)
 
 Install tor browser + add path to tor.exe in environment variable Path (for user or system)
 
