@@ -60,7 +60,7 @@ if __name__ == '__main__':
             print("New user agent = " + driver.execute_script("return navigator.userAgent;"))
 
             # print("Obtention page : Début")
-            driver.get("https://youtu.be/bNeCXe0BVIw")
+            driver.get("https://youtu.be/11111111111")
             # print("Obtention page : Fin")
 
             driver.add_cookie({"name": "CONSENT", "value": "YES+DE.fr+V10+BX"})
