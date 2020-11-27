@@ -4,7 +4,7 @@ Install tor browser + add path to tor.exe in environment variable Path (for user
 
 Install chromedriver
 
-Modify code (for chromedriver path)
+Modify code (for chromedriver path, and strings, eg. for Captcha detection)
 
 Start Tor Browser
 
