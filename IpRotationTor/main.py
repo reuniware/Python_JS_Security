@@ -21,11 +21,13 @@ if __name__ == '__main__':
             chrome_options.add_argument('--proxy-server=socks5://%s' % proxy)
             # chrome_options.add_argument('--headless')
 
-            driver = webdriver.Chrome('C:/PathToChromeDriver/chromedriver.exe', options=chrome_options)
+            driver = webdriver.Chrome('C:/PATH_TO_CHROMEDRIVER_EXE/chromedriver.exe', options=chrome_options)
 
             print("Obtention page : Début")
-            driver.get("https://youtu.be/00000000")
+            driver.get("https://youtu.be/00000000000")
             print("Obtention page : Fin")
+
+            driver.add_cookie({"name": "CONSENT", "value": "YES+DE.fr+V10+BX"})
 
             print("Vérif captcha : Début")
             src = driver.page_source
@@ -46,26 +48,9 @@ if __name__ == '__main__':
 
             time.sleep(5)
 
-            print("Recherche bouton JACCEPTE : Début")
-            try:
-                driver.find_element_by_id("introAgreeButton").click()
-                print('Bouton "Jaccepte" cliqué !')
-            except NoSuchElementException:
-                print('Bouton "Jaccepte" non trouvé')
-                pass
-            print("Recherche bouton JACCEPTE : Fin")
+            driver.refresh()
 
-            # driver.minimize_window()
-            # driver.implicitly_wait(15)
-
-            # try:
-            #     driver.find_element_by_class_name("recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox").click()
-            #     print("Captcha detected")
-            # except NoSuchElementException:
-            #     print("No captcha detected")
-            #     pass
-
-            time.sleep(500)
+            time.sleep(120)
 
             driver.quit()
 
