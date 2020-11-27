@@ -10,4 +10,4 @@ Start Tor Browser
 
 Run the script
 
-You will have IP rotation and will be able to generate traffic for eg. a Youtube Video ;)
+You will have IP rotation + User Agent rotation and will be able to generate traffic for eg. a Youtube Video ;)
