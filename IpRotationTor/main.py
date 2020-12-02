@@ -1,7 +1,7 @@
 # Add C:\...\Tor Browser\Browser\TorBrowser\Tor to the current user's environment variables (Windows 10)
 from random import randint
 
-from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
+from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException, NoSuchWindowException
 from torrequest import TorRequest
 from selenium import webdriver
 import time
@@ -50,9 +50,10 @@ if __name__ == '__main__':
             chrome_options = webdriver.ChromeOptions()
             proxy = 'localhost:9150'
             chrome_options.add_argument('--proxy-server=socks5://%s' % proxy)
-            # chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--lang=fr')
 
-            driver = webdriver.Chrome('C:/PATH_TO_CHROMEDRIVER.EXE/chromedriver.exe', options=chrome_options)
+            driver = webdriver.Chrome('path_to_chromedriver/chromedriver.exe', options=chrome_options)
 
             iUserAgent = randint(0, len(UserAgentList)-1)
             newUserAgent = UserAgentList[iUserAgent]
@@ -60,10 +61,14 @@ if __name__ == '__main__':
             print("New user agent = " + driver.execute_script("return navigator.userAgent;"))
 
             # print("Obtention page : Début")
-            driver.get("https://youtu.be/11111111111")
+            # driver.get("https://youtu.be/00000000000")
+            driver.get("https://www.youtube.com/watch?v=00000000000")
             # print("Obtention page : Fin")
 
-            driver.add_cookie({"name": "CONSENT", "value": "YES+DE.fr+V10+BX"})
+            try:
+                driver.add_cookie({"name": "CONSENT", "value": "YES+DE.fr+V10+BX"})
+            except NoSuchWindowException:
+                pass
 
             # print("Vérif captcha : Début")
             src = driver.page_source
@@ -86,11 +91,46 @@ if __name__ == '__main__':
                 pass
             # print("Recherche bouton NON MERCI : Fin")
 
+            # print("Recherche bouton NO THANKS : Début")
+            try:
+                driver.find_element_by_xpath(
+                    "//paper-button[@class='style-scope yt-button-renderer style-text size-small'][.='No thanks']").click()
+                print('Bouton "No thanks" cliqué !')
+            except NoSuchElementException:
+                print('Bouton "No thanks" non trouvé')
+                pass
+            except ElementNotInteractableException:
+                print('ElementNotInteractableException')
+                pass
+            # print("Recherche bouton NON MERCI : Fin")
+
             time.sleep(5)
 
             driver.refresh()
 
+            # print("Recherche bouton JACCEPTE : Début")
+            # try:
+            #     # driver.find_element_by_xpath("span[@class='RveJvd snByac']").click()
+            #     driver.find_element_by_xpath("//*[@class='RveJvd snByac']").click()
+            #     print('Bouton "Jaccepte" cliqué !')
+            # except NoSuchElementException:
+            #     print('Bouton "Jaccepte" non trouvé')
+            #     driver.refresh()
+            #     pass
+            # print("Recherche bouton JACCEPTE : Fin")
+
+            # driver.minimize_window()
+            # driver.implicitly_wait(15)
+
+            # try:
+            #     driver.find_element_by_class_name("recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox").click()
+            #     print("Captcha detected")
+            # except NoSuchElementException:
+            #     print("No captcha detected")
+            #     pass
+
             randomTime = randint(60, 120)
+            # randomTime = 60*60
             print("Waiting for " + str(randomTime) + " seconds (random between 60 and 120).")
             time.sleep(randomTime)
 
