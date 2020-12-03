@@ -12,12 +12,8 @@ if __name__ == '__main__':
 
 with TorRequest(proxy_port=9150, ctrl_port=9151, password=None) as tr:
 
-    # tr.reset_identity()
-
     resp = tr.get('http://www.ipecho.net/plain')
     print("Current IP : " + resp.text)
-
-    # json_data = json.dump(data)
 
     index_reset = 0
 
