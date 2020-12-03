@@ -9,9 +9,15 @@ Clues for adapting for Windows 7 (with Python 2.7) :
 - Import requesocks
 
 import requesocks
+
 session = requesocks.session()
+
 session.proxies = {'http': 'socks5://127.0.0.1:9150', 'https': 'socks5://127.0.0.1:9150'}
+
 r = session.get('http://www.ipecho.net/plain', auth=('user', 'pass'))
+
 print(r.status_code)
+
 print(r.headers['content-type'])
+
 print(r.text)
