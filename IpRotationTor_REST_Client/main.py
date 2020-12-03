@@ -31,5 +31,5 @@ with TorRequest(proxy_port=9150, ctrl_port=9151, password=None) as tr:
         data['username'] = 1000 * (chr(randint(65, 90)) + chr(randint(65, 90)) + chr(randint(65, 90))) + str(i) + '@random_domain.com'
 
         resp = tr.post("https://your_rest_api_server_here/api/api_function", json=data)
-        print(str(i) + ":" + str(resp.status_code))
+        print(str(i) + ":" + str(resp.status_code) + " " + str(resp.elapsed.microseconds) + "µs")
 
