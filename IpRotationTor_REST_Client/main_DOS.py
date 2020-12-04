@@ -22,7 +22,7 @@ def get_current_time():
 def func5(data, i):
     try:
         resp = tr.post("https://rest_server/api/rest_func", json=data)
-        print(get_current_time() + ":(" + str(i) + ")):" + str(resp.status_code) + " " + str(resp.elapsed.microseconds) + "µs")
+        print(get_current_time() + ":(" + str(i) + "):" + str(resp.status_code) + " " + str(resp.elapsed.microseconds) + "µs")
         if resp.status_code == 503:
             print("DOS")
     except ProtocolError:
