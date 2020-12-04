@@ -24,16 +24,19 @@ def func5(data, i):
         resp = tr.post("https://rest_server/api/rest_func", json=data)
         print(get_current_time() + ":(" + str(i) + ")):" + str(resp.status_code) + " " + str(resp.elapsed.microseconds) + "µs")
         if resp.status_code == 503:
-            print("sleeping")
-            time.sleep(5)
+            print("DOS")
     except ProtocolError:
         print(get_current_time() + ":func5: ProtocolError")
+        pass
     except TimeoutError:
         print(get_current_time() + ":func5: TimeoutError")
+        pass
     except ConnectionError:
         print(get_current_time() + ":func5: ConnectionError")
+        pass
     except NewConnectionError:
         print(get_current_time() + ":func5: NewConnectionError")
+        pass
     except:
         print(get_current_time() + ":func5: exception: " + str(sys.exc_info()[1]))
         pass
