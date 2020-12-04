@@ -1,5 +1,7 @@
 # coding: utf-8
 
+# FOR NOW THERE IS NO IP ROTATION FOR THIS SCRIPT (ONLY THE FIRST TOR IP ADDRESS IS USED). I'M WORKING ON THAT.
+
 # Add C:\...\Tor Browser\Browser\TorBrowser\Tor to the current user's environment variables (Windows 10/Windows 7)
 import json
 import requesocks
