@@ -28,9 +28,9 @@ POST SAMPLE :
 
 data = {}
 
-data['name'] = "toto"
+data['name'] = "exampleOfJsonData1"
 
-data['username'] = "toto@toto.fr"
+data['username'] = "exampleOfJsonData2"
 
 newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
