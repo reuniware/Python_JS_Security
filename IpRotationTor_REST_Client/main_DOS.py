@@ -1,4 +1,5 @@
 # Add C:\...\Tor Browser\Browser\TorBrowser\Tor to the current user's environment variables (Windows 10)
+# Be aware that this will create a huge amount of requests to the server
 import threading
 from random import randint, random
 
