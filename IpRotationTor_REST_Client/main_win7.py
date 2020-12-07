@@ -17,8 +17,8 @@ print(r.headers['content-type'])
 print(r.text)
 
 data = {}
-data['name'] = "toto"
-data['username'] = "toto@toto.fr"
+data['name'] = "exampleOfJsonData1"
+data['username'] = "exampleOfJsonData2"
 newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 r = session.post("https://apiserver/api/apifunction", data=json.dumps(data), headers=newHeaders)
 print(r.status_code)
