@@ -3,6 +3,7 @@
 # apt-get install build-essential python-dev libnetfilter-queue-dev
 # pip install NetfilterQueue
 # sudo apt-get install python-netfilterqueue
+# pip3 install -U git+https://github.com/kti/python-netfilterqueue
 # iptables -F
 # iptables -F -t nat
 # iptables -I FORWARD -j NFQUEUE --queue-num 0
