@@ -22,7 +22,8 @@ import dns.reversename
 
 from scapy.layers.inet import IP, TCP, UDP, ICMP
 from scapy.layers.l2 import ARP
-from scapy.modules.winpcapy import pcap
+# from scapy.modules.winpcapy import pcap
+from scapy.libs.winpcapy import pcap
 
 from datetime import datetime
 
