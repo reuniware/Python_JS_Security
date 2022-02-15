@@ -68,7 +68,7 @@ resolver.timeout = 0.250
 ni.ifaddresses(interface)
 ip_local = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
 
-whitelist_ips = {ip_local}
+whitelist_ips = {ip_local, "192.168.10.33"}
 blacklist_ips = {"52.109.88.10", "40.69.221.239", "40.67.254.36", "52.114.88.28", "13.107.42.12", "52.114.132.22",
                  "40.67.251.132"}
 log_only_str = {""}  # If nothing to log then {""}       # string is compared to log_str variable
@@ -254,7 +254,7 @@ def process_packet(input_packet):
                 for str_to_search in whitelist_str:
                     if not packet_processed:
                         if str_to_search in log_str:
-                            t = Thread(target=accept_packet(), args=(input_packet,))
+                            t = Thread(target=accept_packet(input_packet), args=(input_packet,))
                             t.start()
                             packet_processed = True
                             log_str_ws = "Whitelisted STR : Accepting [" + str_to_search + "]"
