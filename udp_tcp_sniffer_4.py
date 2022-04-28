@@ -1,6 +1,6 @@
 # coding: utf-8
 
-# apt-get install build-essential python-dev libnetfilter-queue-dev
+# apt-get install build-essential python2-dev libnetfilter-queue-dev
 # pip install NetfilterQueue
 # sudo apt-get install python-netfilterqueue
 # pip3 install -U git+https://github.com/kti/python-netfilterqueue
