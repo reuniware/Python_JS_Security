@@ -1,5 +1,6 @@
 // Create a mnemonics.txt file with one mnemonic (seed phrase) per line in it 
 // This code will get the balance of each address corresponding to each seed phrase
+// If you need help for a seed phrase recovery (if some words are missing) then feel free to contact me at investdatasystems@yahoo.com
 
 const ethers = require('ethers');
 const Web3 = require('web3');
