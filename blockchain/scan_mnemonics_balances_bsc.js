@@ -1,5 +1,5 @@
 // Create a mnemonics.txt file with one mnemonic (seed phrase) per line in it 
-// This code will get the balance of each address corresponding to each see phrase
+// This code will get the balance of each address corresponding to each seed phrase
 
 const ethers = require('ethers');
 const fs = require('fs');
