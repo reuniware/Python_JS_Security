@@ -37,6 +37,9 @@ function processMnemonic(mnemonic) {
     tokenArray.push("0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"); // BUSD
     tokenArray.push("0x524bC91Dc82d6b90EF29F76A3ECAaBAffFD490Bc"); // USDT
     tokenArray.push("0x2170Ed0880ac9A755fd29B2688956BD959F933F8"); // Binance-Peg Ethereum Token (ETH)
+    tokenArray.push("0x55d398326f99059fF775485246999027B3197955"); // BSC-USD
+    tokenArray.push("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"); // WBNB
+    tokenArray.push("0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"); // USDC
     for (const element of tokenArray) {
         processToken("", element, account2.address).then(r => {});
     }
