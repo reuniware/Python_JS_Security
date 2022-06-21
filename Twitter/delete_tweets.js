@@ -21,3 +21,5 @@ document.querySelectorAll('[aria-label="More"]').forEach(function
 setTimeout(delTweets, 4000); //less than 4000 might be rate limited or account suspended. increase timeout if any suspend or rate limit happens
 }
 delTweets();
+
+// Also check : https://tweetdelete.net/
