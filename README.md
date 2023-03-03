@@ -27,6 +27,8 @@ sudo bettercap
 
 set arp.spoof.whitelist 192.168.10.11 (if you need to whitelist your IP address)
 
+set arp.spoff.fullduplex true (if you want to view bi-directional flows, not only from LAN to WAN but also WAN to LAN)
+
 arp.spoof on
 
 Then you need to launch the python script, eg. python3 udp_tcp_sniffer_4.py in another terminal and under the root account
