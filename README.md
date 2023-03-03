@@ -29,4 +29,4 @@ set arp.spoof.whitelist 192.168.10.11 (if you need to whitelist your IP address)
 
 arp.spoof on
 
-Then you need to launch the python script, eg. python3 udp_tcp_sniffer_4.py
+Then you need to launch the python script, eg. python3 udp_tcp_sniffer_4.py in another terminal and under the root account
