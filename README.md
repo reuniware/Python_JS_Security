@@ -32,3 +32,12 @@ set arp.spoof.fullduplex true (if you want to view bi-directional flows, not onl
 arp.spoof on
 
 Then you need to launch the python script, eg. python3 udp_tcp_sniffer_4.py in another terminal and under the root account
+
+
+# What can you do with these sniffers ?
+
+You can be the global firewall for all your network (whitelist IPs, blacklist IPs...)
+
+You can sniff UDP packets, TCP packets, DNS packets...
+
+
