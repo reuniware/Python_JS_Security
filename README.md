@@ -18,5 +18,5 @@ git clone https://github.com/kti/python-netfilterqueue.git
 
 cd python-netfilterqueue
 
-python setup.py install
+python3 setup.py install
 
