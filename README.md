@@ -21,7 +21,7 @@ cd python-netfilterqueue
 python3 setup.py install
 
 
-# How to use the sniffers with Bettercap
+# How to use the sniffers with Bettercap ?
 
 sudo bettercap
 
