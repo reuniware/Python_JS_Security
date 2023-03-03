@@ -10,3 +10,13 @@ DNS Sniffer
 TCP Sniffer
 
 Experimental IP Rotation with TOR
+
+
+# Netfilterqueue installation problems ? Follow this alternative procedure under the root account on Kali Linux :
+
+git clone https://github.com/kti/python-netfilterqueue.git
+
+cd python-netfilterqueue
+
+python setup.py install
+
