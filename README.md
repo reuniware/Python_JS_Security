@@ -27,7 +27,7 @@ sudo bettercap
 
 set arp.spoof.whitelist 192.168.10.11 (if you need to whitelist your IP address)
 
-set arp.spoff.fullduplex true (if you want to view bi-directional flows, not only from LAN to WAN but also WAN to LAN)
+set arp.spoof.fullduplex true (if you want to view bi-directional flows, not only from LAN to WAN but also WAN to LAN)
 
 arp.spoof on
 
