@@ -38,6 +38,6 @@ Then you need to launch the python script, eg. python3 udp_tcp_sniffer_4.py in a
 
 You can be the global firewall for all your network (whitelist IPs, blacklist IPs...)
 
-You can sniff UDP packets, TCP packets, DNS packets...
+You can sniff UDP packets, TCP packets, DNS packets, HTTP packets, HTTPS packets (without decryption...)
 
 
