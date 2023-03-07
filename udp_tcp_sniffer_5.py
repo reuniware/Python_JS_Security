@@ -165,7 +165,7 @@ def process_packet(input_packet):
                     # answers = dns.resolver.query(no, 'PTR')
                     host = socket.gethostbyaddr(ip_src)
                 except:
-                    print("gethostbyaddr except ip src")
+                    #print("gethostbyaddr except ip src")
                     pass
 
                 dns_names_src = dns_names_src + str(host) + "/"
@@ -189,7 +189,7 @@ def process_packet(input_packet):
                     # print(answers, answers_txt)
 
                 except:
-                    print("gethostbyaddr except ip dst")
+                    #print("gethostbyaddr except ip dst")
                     pass
 
                 dns_names_dst = dns_names_dst + str(host) + "/"
@@ -228,7 +228,7 @@ def process_packet(input_packet):
             for str_to_search in log_only_str:
                 if str_to_search in log_str:
                     if LOG_TO_SCREEN:
-                        # if "78.40." in log_str:
+                        if "78.40." in log_str:
                             t = Thread(target=log_to_screen, args=(log_str,))
                             t.start()
 
